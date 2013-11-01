@@ -15,6 +15,7 @@
 class Spaceship;
 class Enemy;
 class Projectile;
+class ScrollingBackground;
 
 namespace GameSettings
 {
@@ -40,13 +41,6 @@ namespace GameSettings
 	namespace OverlayDetails
 	{
 		static Platform::String^ caption = "Score";
-	}
-	namespace BackgroundDetails
-	{
-		// Thanks to Fall Fury's vertical scrolling background tutorial
-		static const float BACKGROUND_MIDPOINT = 1366.0f / 2.0f;
-		static float m_backgroundPos0 = BACKGROUND_MIDPOINT;
-		static float m_backgroundPos1 = m_backgroundPos0 * 3;
 	}
 }
 
@@ -121,6 +115,7 @@ private:
 	std::vector<Projectile*> m_projectiles;
 
 	Spaceship* m_spaceship;
+	ScrollingBackground* m_scroll_background;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_enemy_texture;
 
     int m_numParticlesToDraw;

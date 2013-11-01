@@ -12,6 +12,7 @@
 #include "Spaceship.h"
 #include "Enemy.h"
 #include "Projectile.h"
+#include "ScrollingBackground.h"
 
 #include <iostream>
 #include <string>
@@ -31,6 +32,8 @@ SimpleSprites::SimpleSprites() :
 {
 	// create player object
 	m_spaceship = new Spaceship;// space_ship02.gif");
+
+	m_scroll_background = new ScrollingBackground;
 }
 
 SimpleSprites::~SimpleSprites()
@@ -72,15 +75,18 @@ void SimpleSprites::CreateDeviceResources()
 
     BasicLoader^ loader = ref new BasicLoader(m_d3dDevice.Get(), m_wicFactory.Get());
 
+	// load scrolling background texture
+	m_spriteBatch->AddTexture(m_scroll_background->loadTexture(loader));
+	/*
     loader->LoadTexture(
         "m31.png",
         &m_background,
         nullptr
         );
-    m_spriteBatch->AddTexture(m_background.Get());
+    m_spriteBatch->AddTexture(m_background.Get());//*/
 
     loader->LoadTexture(
-        "ida.dds",
+        "fishasteroid.png",
         &m_asteroid,
         nullptr
         );
@@ -94,7 +100,7 @@ void SimpleSprites::CreateDeviceResources()
     m_spriteBatch->AddTexture(m_particle.Get());
 
 	// load enemy texture
-	loader->LoadTexture("enemyShip.png", &m_enemy_texture, nullptr);
+	loader->LoadTexture("seaenemy.png", &m_enemy_texture, nullptr);
 	m_spriteBatch->AddTexture(m_enemy_texture.Get());
 
 	// load player texture
@@ -117,20 +123,24 @@ void SimpleSprites::CreateWindowSizeDependentResources()
 {
     DirectXBase::CreateWindowSizeDependentResources();
 
+	// Give scroll background object window information
+	m_scroll_background->setWindowSize(m_windowBounds);
+	m_scroll_background->initSliding();
+
     // Randomly generate some non-interactive asteroids to fit the screen.
 
     m_asteroidData.clear();
     for (int i = 0; i < SampleSettings::NumAsteroids; i++)
     {
         AsteroidData data;
-        data.pos.x = RandFloat(0.0f, m_windowBounds.Width);
-        data.pos.y = RandFloat(0.0f, m_windowBounds.Height);
+		data.pos.x = RandFloat(-0.5*m_windowBounds.Width*i/SampleSettings::NumAsteroids, m_windowBounds.Width);
+		data.pos.y = RandFloat(-0.5*m_windowBounds.Height*i/SampleSettings::NumAsteroids, m_windowBounds.Height);
         float tempRot = RandFloat(-PI_F, PI_F);
         float tempMag = RandFloat(0.0f, 17.0f);
         data.vel.x = tempMag * cosf(tempRot);
         data.vel.y = tempMag * sinf(tempRot);
         data.rot = RandFloat(-PI_F, PI_F);
-        data.scale = RandFloat(0.1f, 1.0f);
+        data.scale = RandFloat(0.1f, 0.4f); // scale
         data.rotVel = RandFloat(-PI_F, PI_F) / (7.0f + 3.0f * data.scale);
         m_asteroidData.push_back(data);
     }
@@ -419,6 +429,9 @@ void SimpleSprites::Update(float timeTotal, float timeDelta)
 	OverlayDetails::caption = ref new Platform::String(wCaption.c_str());
 
 	m_sampleOverlay->change_m_sampleName(OverlayDetails::caption);
+
+	// update scrolling background
+	m_scroll_background->update();
 }
 
 void SimpleSprites::Render()
@@ -437,46 +450,15 @@ void SimpleSprites::Render()
     m_spriteBatch->Begin();
 
     // Draw the background.
-
+	// dark out if player dead (then game over)
 	if (m_spaceship->getHealth() == 0)
 	{
-		m_spriteBatch->Draw(
-			m_background.Get(),
-			float2(m_windowBounds.Width/2, BackgroundDetails::m_backgroundPos0),
-			//float2(0.5f, 0.5f),
-			PositionUnits::Normalized,
-			float2(1.0f, 1.0f),
-			SizeUnits::Normalized,
-			float4(0.2f, 0.2f, 0.2f, 1.0f)
-		);
-		m_spriteBatch->Draw(
-			m_background.Get(),
-			float2(m_windowBounds.Width / 2, BackgroundDetails::m_backgroundPos1),
-			//float2(0.5f, 0.5f),
-			PositionUnits::Normalized,
-			float2(1.0f, 1.0f),
-			SizeUnits::Normalized,
-			float4(0.2f, 0.2f, 0.2f, 1.0f)
-			);
+		m_scroll_background->draw(m_spriteBatch, float4(0.2f, 0.2f, 0.2f, 1.0f));
 	}
 	else
 	{
-		m_spriteBatch->Draw(
-			m_background.Get(),
-			float2(m_windowBounds.Width / 2, BackgroundDetails::m_backgroundPos0),
-			//float2(0.5f, 0.5f),
-			PositionUnits::Normalized,
-			float2(1.0f, 1.0f),
-			SizeUnits::Normalized
-		);
-		m_spriteBatch->Draw(
-			m_background.Get(),
-			float2(m_windowBounds.Width / 2, BackgroundDetails::m_backgroundPos1),
-			//float2(0.5f, 0.5f),
-			PositionUnits::Normalized,
-			float2(1.0f, 1.0f),
-			SizeUnits::Normalized
-			);
+		// Game is alive and well.
+		m_scroll_background->draw(m_spriteBatch);
 	}
 
     // Draw the non-interactive asteroids.
@@ -489,7 +471,7 @@ void SimpleSprites::Render()
             PositionUnits::DIPs,
             float2(1.0f, 1.0f) * asteroid->scale,
             SizeUnits::Normalized,
-            float4(0.8f, 0.8f, 1.0f, 1.0f),
+            float4(0.8f, 0.8f, 1.0f, 0.6f),
             asteroid->rot
             );
     }
@@ -537,7 +519,7 @@ void SimpleSprites::Render()
 	for (auto projectile : m_projectiles)
 	{
 		m_spriteBatch->Draw(m_particle.Get(), projectile->getPos(), PositionUnits::DIPs,
-			float2(32.0f, 32.0f), SizeUnits::DIPs, float4(7.5f, 0.3f, 1.0f, 0.7f), 0.0f);
+			float2(32.0f, 32.0f), SizeUnits::DIPs, float4(1.0f, 0.3f, 1.0f, 0.7f), 0.0f);
 	}
 
     m_spriteBatch->End();
