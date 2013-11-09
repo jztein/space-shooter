@@ -13,6 +13,7 @@
 #include "Enemy.h"
 #include "Projectile.h"
 #include "ScrollingBackground.h"
+#include "Fruit.h"
 
 #include <iostream>
 #include <string>
@@ -34,6 +35,8 @@ SimpleSprites::SimpleSprites() :
 	m_runner = new Runner;// space_ship02.gif");
 
 	m_scroll_background = new ScrollingBackground;
+
+	m_fruit = NULL;
 }
 
 SimpleSprites::~SimpleSprites()
@@ -63,6 +66,7 @@ void SimpleSprites::CreateDeviceResources()
 							/*+ SampleSettings::NumAsteroids */
 							+ EnemyDetails::EnemyCountMax
 							+ ProjectileDetails::MaxBullets
+							+ 1 /* fruit */
 							+ 1 /* ground */
 							+ 1;
     if (m_featureLevel < D3D_FEATURE_LEVEL_9_3)
@@ -111,12 +115,16 @@ void SimpleSprites::CreateDeviceResources()
 	m_spriteBatch->AddTexture(m_ground.Get());
 
 	// load enemy texture
-	loader->LoadTexture("seaenemy.png", &m_enemy_texture, nullptr);
+	loader->LoadTexture("armyCrab.png", &m_enemy_texture, nullptr);
 	m_spriteBatch->AddTexture(m_enemy_texture.Get());
 
 	// load player texture
 	//m_spriteBatch->AddTexture(m_runner->loadTexture(loader));
 	m_runner->loadTexture(m_spriteBatch, loader);
+
+	// load fruit texture
+	loader->LoadTexture("apple.png", &m_fruit_texture, nullptr);
+	m_spriteBatch->AddTexture(m_fruit_texture.Get());
 
     // Create the Sample Overlay.
 
@@ -233,7 +241,16 @@ void SimpleSprites::Update(float timeTotal, float timeDelta)
 			{
 				if (enemy->hasCollided(p->getPos()))
 				{
-					m_runner->plusScore(EnemyDetails::killPoints);
+					// Give more points if player was jumping
+					if (m_runner->isJumping())
+					{
+						m_runner->plusScore(EnemyDetails::bonusKillPoints);
+					}
+					else
+					{
+						m_runner->plusScore(EnemyDetails::killPoints);
+					}
+					
 					hit = true;
 					break;
 				}
@@ -258,13 +275,13 @@ void SimpleSprites::Update(float timeTotal, float timeDelta)
 	}
 
 	// pace enemy creation
-	if (static_cast<int>(timeTotal) % 2 == 0)
+	if (static_cast<int>(timeTotal) % 4 == 0)
 	{
 		// create enemies if not more than max
 		if (m_enemies.size() < EnemyDetails::EnemyCountMax)
 		{
 			int numEnemiesToCreate = rand() %
-							((EnemyDetails::EnemyCountMax - m_enemies.size())/2);
+							((EnemyDetails::EnemyCountMax - m_enemies.size())/3);
 
 			Enemy* new_enemy = NULL;
 
@@ -275,6 +292,32 @@ void SimpleSprites::Update(float timeTotal, float timeDelta)
 				m_enemies.push_back(new_enemy);
 			}
 		}
+	}
+
+	// update fruit if it exists
+	if (m_fruit)
+		m_fruit->update(timeDelta);
+
+	// check if player got fruit
+	if (m_fruit)
+	{
+		if (m_fruit->hasCollided(m_runner->getPos()))
+		{
+			m_runner->decreaseHealth(FruitDetails::healthPoints);
+			delete m_fruit;
+			m_fruit = NULL;
+		}
+		else if (m_fruit->getPos().x < -m_windowBounds.X)
+		{
+			delete m_fruit;
+			m_fruit = NULL;
+		}
+	}
+	
+	// pace fruit creation to every 30s
+	if (!m_fruit)//217 == 0))
+	{
+		m_fruit = new Fruit(m_windowBounds);
 	}
 
 	// update player spaceship
@@ -328,7 +371,7 @@ void SimpleSprites::Update(float timeTotal, float timeDelta)
 	m_sampleOverlay->change_m_sampleName(OverlayDetails::caption);
 
 	// update scrolling background
-	m_scroll_background->update();
+	m_scroll_background->update(timeDelta);
 }
 
 void SimpleSprites::Render()
@@ -399,7 +442,7 @@ void SimpleSprites::Render()
 	for (auto projectile : m_projectiles)
 	{
 		m_spriteBatch->Draw(m_particle.Get(), projectile->getPos(), PositionUnits::DIPs,
-			float2(32.0f, 32.0f), SizeUnits::DIPs, float4(1.0f, 0.3f, 1.0f, 0.7f), 0.0f);
+			float2(50.0f, 50.0f), SizeUnits::DIPs, float4(0.0f, 0.9f, 1.0f, 1.0f), 0.0f);
 	}
 
 	// draw ground
@@ -411,6 +454,13 @@ void SimpleSprites::Render()
 		SizeUnits::DIPs,
 		float4(1.0f, 1.0f, 1.0f, 1.0f)
 	);
+
+	// draw fruit
+	if (m_fruit)
+	{
+		m_spriteBatch->Draw(m_fruit_texture.Get(), m_fruit->getPos(), PositionUnits::DIPs,
+			FruitDetails::FruitSize, SizeUnits::DIPs, float4(1.0f, 1.0f, 1.0f, 1.0f), 0.0f);
+	}
 
     m_spriteBatch->End();
 

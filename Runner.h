@@ -25,6 +25,8 @@ public:
 	void setPos(Windows::Foundation::Rect windowBounds);
 	void stop();
 
+	bool isJumping() { return m_jumping; }
+
 	unsigned int getNumTextures() { return 10; }
 
 	float2 getPos() { return m_pos; }

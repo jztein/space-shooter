@@ -9,12 +9,12 @@ float ENEMY_MAX_Y_VEL = 550.0f;
 float ENEMY_VEL_DELTA = 30.0f;
 int ENEMY_START_HEALTH = 1;
 float2 ENEMY_START_POS(200.0f, 350.0f);
-float2 ENEMY_START_VEL(200.0f, 150.0f);
+float2 ENEMY_START_VEL(250.0f, 150.0f);
 
 Enemy::Enemy()
 {
 	m_pos = ENEMY_START_POS;
-	m_vel = ENEMY_START_VEL;
+	m_vel = ENEMY_START_VEL * RandFloat(0.8f, 1.5f);
 	m_health = ENEMY_START_HEALTH;
 	m_texturePtr = NULL;
 }
@@ -23,7 +23,7 @@ Enemy::Enemy(Windows::Foundation::Rect windowBounds)
 {
 	m_pos.x = windowBounds.Width;
 	m_pos.y = RandFloat(0.0, windowBounds.Height);
-	m_vel = ENEMY_START_VEL;
+	m_vel = ENEMY_START_VEL * RandFloat(0.8f, 3.0f);
 	m_health = ENEMY_START_HEALTH;
 	m_texturePtr = NULL;
 }
@@ -50,10 +50,10 @@ ID3D11Texture2D* Enemy::getTexturePtr()
 
 bool Enemy::hasCollided(float2 pos)
 {
-	if (pos.x > (m_pos.x - EnemySize.x) && 
-		pos.x < (m_pos.x + EnemySize.x) &&
-		pos.y >(m_pos.y - EnemySize.y) &&
-		pos.y < (m_pos.y + EnemySize.y))
+	if (pos.x > (m_pos.x - EnemyCollisionSize.x) && 
+		pos.x < (m_pos.x + EnemyCollisionSize.x) &&
+		pos.y >(m_pos.y - EnemyCollisionSize.y) &&
+		pos.y < (m_pos.y + EnemyCollisionSize.y))
 		return true;
 
 	return false;

@@ -13,7 +13,7 @@ using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::UI::Core;
 
-int RUN_START_HEALTH = 25;
+int RUN_START_HEALTH = 5000;
 float2 RUN_START_POS(200.0f, 350.0f);
 float2 RUN_START_VEL(250.0f, 0.0f);
 float RUN_GRAVITY = 1000.0f;
@@ -149,7 +149,7 @@ void Runner::update(float deltaTime, Windows::Foundation::Rect windowBounds)
 
 void Runner::setPos(Windows::Foundation::Rect windowBounds)
 {
-	m_pos = float2(windowBounds.Width / 2, windowBounds.Height - 75.0f);
+	m_pos = float2(windowBounds.Width / 3, windowBounds.Height - 75.0f);
 	m_ground = m_pos.y;
 }
 

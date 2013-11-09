@@ -16,6 +16,7 @@ class Runner;
 class Enemy;
 class Projectile;
 class ScrollingBackground;
+class Fruit;
 
 namespace GameSettings
 {
@@ -24,9 +25,17 @@ namespace GameSettings
 		static const unsigned int EnemyCountMax = 15;
 		static const unsigned int EnemyCountMin = 0;
 		static const unsigned int InitialEnemyCount = 1;
-		static const float2 EnemySize(32.0f, 32.0f);
+		static const float2 EnemySize(64.0f, 48.0f);
+		static const float2 EnemyCollisionSize(EnemySize.x*1.3f, EnemySize.y*1.3f);
 		static const unsigned int harm = 1;
 		static const unsigned int killPoints = 1;
+		static const unsigned int bonusKillPoints = 5;
+	}
+	namespace FruitDetails
+	{
+		static const float2 FruitSize(48.0f, 48.0f);
+		static const float2 FruitCollisionSize(FruitSize.x*1.3f, FruitSize.y*1.3f);
+		static const unsigned int healthPoints = -5; // since passed to decreaseHealth()
 	}
 	namespace ProjectileDetails
 	{
@@ -112,12 +121,13 @@ private:
     std::vector<ParticleData> m_particleData;
     std::map<uint32, float2> m_repulsors;
 
+	Fruit* m_fruit;
 	std::vector<Enemy*> m_enemies;
 	std::vector<Projectile*> m_projectiles;
 
 	Runner* m_runner;
 	ScrollingBackground* m_scroll_background;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_enemy_texture;
-
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_fruit_texture;
     int m_numParticlesToDraw;
 };
