@@ -12,7 +12,7 @@
 #include "AutoThrottle.h"
 #include "BasicSprites.h"
 
-class Spaceship;
+class Runner;
 class Enemy;
 class Projectile;
 class ScrollingBackground;
@@ -33,9 +33,9 @@ namespace GameSettings
 		// maximum number of bullets at one time (then reload)
 		static const unsigned int MaxBullets = 3;
 	}
-	namespace SpaceshipDetails
+	namespace RunnerDetails
 	{
-		static const float2 SpaceshipSize(32.0f, 32.0f);
+		static const float2 RunnerSize(0.7f, 0.7f);
 		static bool wasHit = false;
 	}
 	namespace OverlayDetails
@@ -107,6 +107,7 @@ private:
     Microsoft::WRL::ComPtr<ID3D11Texture2D> m_background;
     Microsoft::WRL::ComPtr<ID3D11Texture2D> m_asteroid;
     Microsoft::WRL::ComPtr<ID3D11Texture2D> m_particle;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_ground;
     std::vector<AsteroidData> m_asteroidData;
     std::vector<ParticleData> m_particleData;
     std::map<uint32, float2> m_repulsors;
@@ -114,7 +115,7 @@ private:
 	std::vector<Enemy*> m_enemies;
 	std::vector<Projectile*> m_projectiles;
 
-	Spaceship* m_spaceship;
+	Runner* m_runner;
 	ScrollingBackground* m_scroll_background;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_enemy_texture;
 
