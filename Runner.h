@@ -17,6 +17,8 @@ public:
 	Runner();
 	~Runner();
 
+	void resetHealthScorePos();
+
 	ID3D11Texture2D* loadTexture(BasicSprites::SpriteBatch^ spriteBatch, BasicLoader^ loader);
 	ID3D11Texture2D* getTexturePtr();
 

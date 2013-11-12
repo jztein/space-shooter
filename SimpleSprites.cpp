@@ -14,6 +14,7 @@
 #include "Projectile.h"
 #include "ScrollingBackground.h"
 #include "Fruit.h"
+#include "Reset.h"
 
 #include <iostream>
 #include <string>
@@ -36,6 +37,8 @@ SimpleSprites::SimpleSprites() :
 
 	m_scroll_background = new ScrollingBackground;
 
+	m_resetButton = new Reset;
+
 	m_fruit = NULL;
 }
 
@@ -43,6 +46,7 @@ SimpleSprites::~SimpleSprites()
 {
 	delete m_runner;
 	delete m_scroll_background;
+	delete m_resetButton;
 }
 
 void SimpleSprites::CreateDeviceIndependentResources()
@@ -68,6 +72,7 @@ void SimpleSprites::CreateDeviceResources()
 							+ ProjectileDetails::MaxBullets
 							+ 1 /* fruit */
 							+ 1 /* ground */
+							+ 1 /* reset button */
 							+ 1;
     if (m_featureLevel < D3D_FEATURE_LEVEL_9_3)
     {
@@ -122,6 +127,10 @@ void SimpleSprites::CreateDeviceResources()
 	//m_spriteBatch->AddTexture(m_runner->loadTexture(loader));
 	m_runner->loadTexture(m_spriteBatch, loader);
 
+	// load reset button texture
+	loader->LoadTexture("restart_arrow.png", &m_resetButton_texture, nullptr);
+	m_spriteBatch->AddTexture(m_resetButton_texture.Get());
+
 	// load fruit texture
 	loader->LoadTexture("apple.png", &m_fruit_texture, nullptr);
 	m_spriteBatch->AddTexture(m_fruit_texture.Get());
@@ -166,6 +175,8 @@ void SimpleSprites::CreateWindowSizeDependentResources()
     }//*/
 
 	m_runner->setPos(m_windowBounds);
+
+	m_resetButton->setPos(m_windowBounds);
 
     m_sampleOverlay->UpdateForWindowSizeChange();
 }
@@ -462,6 +473,11 @@ void SimpleSprites::Render()
 			FruitDetails::FruitSize, SizeUnits::DIPs, float4(1.0f, 1.0f, 1.0f, 1.0f), 0.0f);
 	}
 
+	// Draw the reset button
+	m_spriteBatch->Draw(m_resetButton_texture.Get(), m_resetButton->getPos(),
+						PositionUnits::DIPs, float2(100.0, 100.0), SizeUnits::DIPs, 
+						float4(1.0f, 1.0f, 1.0f, 0.7f), 0.0f);
+
     m_spriteBatch->End();
 
     // Render the Sample Overlay.
@@ -524,6 +540,11 @@ void SimpleSprites::getKeyresults(Windows::System::VirtualKey key, float timeDel
 		m_spaceship->stopShip();
 		return;//*/
 
+		// RESET
+	case Windows::System::VirtualKey::R:
+		m_runner->resetHealthScorePos();
+		return;
+
 		// fire bullet
 	case Windows::System::VirtualKey::Space:
 		if (m_runner->getHealth())
@@ -537,4 +558,13 @@ void SimpleSprites::getKeyresults(Windows::System::VirtualKey key, float timeDel
 	}
 	
 	return;
+}
+
+void SimpleSprites::RestartIfNeeded(float2 mousePos)
+{
+	if (m_resetButton->hasCollided(mousePos))
+	{
+		m_runner->resetHealthScorePos();
+		return;
+	}
 }

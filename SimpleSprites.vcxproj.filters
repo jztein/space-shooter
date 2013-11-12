@@ -43,6 +43,18 @@
     <ClCompile Include="Projectile.cpp">
       <Filter>Sample Sources</Filter>
     </ClCompile>
+    <ClCompile Include="ScrollingBackground.cpp">
+      <Filter>Sample Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Runner.cpp">
+      <Filter>Sample Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Fruit.cpp">
+      <Filter>Sample Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Reset.cpp">
+      <Filter>Sample Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicLoader.h">
@@ -93,6 +105,18 @@
     <ClInclude Include="Projectile.h">
       <Filter>Sample Sources</Filter>
     </ClInclude>
+    <ClInclude Include="ScrollingBackground.h">
+      <Filter>Sample Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Runner.h">
+      <Filter>Sample Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Fruit.h">
+      <Filter>Sample Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Reset.h">
+      <Filter>Sample Sources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="windowsbig-sdk.png">
@@ -132,6 +156,69 @@
     <Image Include="Square30x30Logo.scale-100.png" />
     <Image Include="StoreLogo.scale-100.png" />
     <Image Include="SplashScreen.scale-100.png" />
+    <Image Include="..\underwater\seaship.png">
+      <Filter>UnderwaterTextures</Filter>
+    </Image>
+    <Image Include="..\underwater\seaenemy.png">
+      <Filter>UnderwaterTextures</Filter>
+    </Image>
+    <Image Include="..\underwater\fishbasev1.png">
+      <Filter>UnderwaterTextures</Filter>
+    </Image>
+    <Image Include="..\underwater\fishasteroid.png">
+      <Filter>UnderwaterTextures</Filter>
+    </Image>
+    <Image Include="..\underwater\3d-underwater_bg.png">
+      <Filter>UnderwaterTextures</Filter>
+    </Image>
+    <Image Include="..\samurai\smw-bg-hills.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\grassy.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\spritesheetvolt_run.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\volt1.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\volt2.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\volt3.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\volt4.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\volt5.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\volt6.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\volt7.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\volt8.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\volt9.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\volt10.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\armyCrab.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\apple.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
+    <Image Include="..\samurai\restart_arrow.png">
+      <Filter>zSamurai Textures</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Sample Sources">
@@ -157,6 +244,12 @@
     </Filter>
     <Filter Include="Components\BasicSprites\Shaders">
       <UniqueIdentifier>{997ca786-97fb-400e-beb6-8d50d882496b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UnderwaterTextures">
+      <UniqueIdentifier>{4ca5104c-1737-424f-870d-570de4301d28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zSamurai Textures">
+      <UniqueIdentifier>{9531ec5f-62bd-4a4f-9f0c-3488c98be859}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

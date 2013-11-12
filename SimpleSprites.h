@@ -17,6 +17,7 @@ class Enemy;
 class Projectile;
 class ScrollingBackground;
 class Fruit;
+class Reset;
 
 namespace GameSettings
 {
@@ -105,6 +106,8 @@ internal:
     void AddRepulsor(_In_ uint32 id, _In_ float2 position);
     void MoveRepulsor(_In_ uint32 id, _In_ float2 position);
     void RemoveRepulsor(_In_ uint32 id);
+
+	void RestartIfNeeded(float2 mousePos);
 	
 	void stopBasicTimer();
 
@@ -125,9 +128,12 @@ private:
 	std::vector<Enemy*> m_enemies;
 	std::vector<Projectile*> m_projectiles;
 
+	Reset* m_resetButton;
+
 	Runner* m_runner;
 	ScrollingBackground* m_scroll_background;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_enemy_texture;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_fruit_texture;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_resetButton_texture;
     int m_numParticlesToDraw;
 };
