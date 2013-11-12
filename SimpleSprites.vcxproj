@@ -187,6 +187,27 @@
     <Image Include="..\New folder\enemyShip.png" />
     <Image Include="..\New folder\oohrooShip.png" />
     <Image Include="..\New folder\space_ship02.gif" />
+    <Image Include="..\samurai\apple.png" />
+    <Image Include="..\samurai\armyCrab.png" />
+    <Image Include="..\samurai\grassy.png" />
+    <Image Include="..\samurai\restart_arrow.png" />
+    <Image Include="..\samurai\smw-bg-hills.png" />
+    <Image Include="..\samurai\spritesheetvolt_run.png" />
+    <Image Include="..\samurai\volt1.png" />
+    <Image Include="..\samurai\volt10.png" />
+    <Image Include="..\samurai\volt2.png" />
+    <Image Include="..\samurai\volt3.png" />
+    <Image Include="..\samurai\volt4.png" />
+    <Image Include="..\samurai\volt5.png" />
+    <Image Include="..\samurai\volt6.png" />
+    <Image Include="..\samurai\volt7.png" />
+    <Image Include="..\samurai\volt8.png" />
+    <Image Include="..\samurai\volt9.png" />
+    <Image Include="..\underwater\3d-underwater_bg.png" />
+    <Image Include="..\underwater\fishasteroid.png" />
+    <Image Include="..\underwater\fishbasev1.png" />
+    <Image Include="..\underwater\seaenemy.png" />
+    <Image Include="..\underwater\seaship.png" />
     <Image Include="SplashScreen.scale-100.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
@@ -212,10 +233,15 @@
     <ClInclude Include="AutoThrottle.h" />
     <ClInclude Include="BasicSprites.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Fruit.h" />
+    <ClInclude Include="GameSprite.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="DirectXApp.h" />
     <ClInclude Include="DirectXSample.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
+    <ClInclude Include="Reset.h" />
+    <ClInclude Include="Runner.h" />
     <ClInclude Include="SampleOverlay.h" />
     <ClInclude Include="DirectXBase.h" />
     <ClInclude Include="BasicTimer.h" />
@@ -223,6 +249,7 @@
     <ClInclude Include="BasicLoader.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="BasicReaderWriter.h" />
+    <ClInclude Include="ScrollingBackground.h" />
     <ClInclude Include="SimpleSprites.h" />
     <ClInclude Include="Spaceship.h" />
   </ItemGroup>
@@ -230,6 +257,7 @@
     <ClCompile Include="AutoThrottle.cpp" />
     <ClCompile Include="BasicSprites.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fruit.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -239,13 +267,17 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="DirectXApp.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="Reset.cpp" />
+    <ClCompile Include="Runner.cpp" />
     <ClCompile Include="SampleOverlay.cpp" />
     <ClCompile Include="DirectXBase.cpp" />
     <ClCompile Include="BasicTimer.cpp" />
     <ClCompile Include="BasicLoader.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="BasicReaderWriter.cpp" />
+    <ClCompile Include="ScrollingBackground.cpp" />
     <ClCompile Include="SimpleSprites.cpp" />
     <ClCompile Include="Spaceship.cpp" />
   </ItemGroup>

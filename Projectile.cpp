@@ -4,14 +4,9 @@
 
 float PROJECTILE_VEL = 500.0f;
 
-Projectile::Projectile(float2 shipPos)
-: m_pos(shipPos)
-{}
-
-// return -1 if did not collide
-int Projectile::collidedWithEnemy(std::vector<Enemy*> enemies)
+Projectile::Projectile(float2 playerPos)
 {
-	return -1;
+	m_pos = playerPos;
 }
 
 void Projectile::update(float timeDelta)

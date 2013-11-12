@@ -55,6 +55,9 @@
     <ClCompile Include="Reset.cpp">
       <Filter>Sample Sources</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Sample Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicLoader.h">
@@ -115,6 +118,12 @@
       <Filter>Sample Sources</Filter>
     </ClInclude>
     <ClInclude Include="Reset.h">
+      <Filter>Sample Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSprite.h">
+      <Filter>Sample Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
       <Filter>Sample Sources</Filter>
     </ClInclude>
   </ItemGroup>

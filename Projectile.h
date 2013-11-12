@@ -1,22 +1,12 @@
 #pragma once
 
-#include "DirectXBase.h"
-#include "SimpleSprites.h"
-//#include "BasicLoader.h"
+#include "GameSprite.h"
 
-class Projectile
+class Projectile: public GameSprite
 {
 public:
-	Projectile(float2 shipPos);
-	~Projectile(){}
-
-	// return -1 if did not collide
-	int collidedWithEnemy(std::vector<Enemy*> enemies);
+	Projectile(float2 playerPos);
+	virtual ~Projectile(){}
 
 	void update(float timeDelta);
-	float2 getPos() { return m_pos; }
-
-private:
-	float2 m_pos;
-	float2 m_vel;
 };

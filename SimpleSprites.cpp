@@ -9,7 +9,8 @@
 #include "SimpleSprites.h"
 #include "BasicLoader.h"
 
-#include "Runner.h"
+//#include "Runner.h"
+#include "Player.h"
 #include "Enemy.h"
 #include "Projectile.h"
 #include "ScrollingBackground.h"
@@ -33,7 +34,7 @@ SimpleSprites::SimpleSprites() :
     m_numParticlesToDraw(SampleSettings::Performance::InitialParticleCount)
 {
 	// create player object
-	m_runner = new Runner;// space_ship02.gif");
+	m_runner = new Player;//Runner;// space_ship02.gif");
 
 	m_scroll_background = new ScrollingBackground;
 
@@ -88,7 +89,8 @@ void SimpleSprites::CreateDeviceResources()
     BasicLoader^ loader = ref new BasicLoader(m_d3dDevice.Get(), m_wicFactory.Get());
 
 	// load scrolling background texture
-	m_spriteBatch->AddTexture(m_scroll_background->loadTexture(loader));
+	//m_spriteBatch->AddTexture(m_scroll_background->loadTexture(loader));
+	m_scroll_background->loadTexture("smw-bg-hills.png", m_spriteBatch, loader);
 	/*
     loader->LoadTexture(
         "m31.png",
@@ -128,12 +130,14 @@ void SimpleSprites::CreateDeviceResources()
 	m_runner->loadTexture(m_spriteBatch, loader);
 
 	// load reset button texture
-	loader->LoadTexture("restart_arrow.png", &m_resetButton_texture, nullptr);
-	m_spriteBatch->AddTexture(m_resetButton_texture.Get());
+	//loader->LoadTexture("restart_arrow.png", &m_resetButton_texture, nullptr);
+	//m_spriteBatch->AddTexture(m_resetButton_texture.Get());
+	m_resetButton->loadTexture("restart_arrow.png", m_spriteBatch, loader);
 
 	// load fruit texture
 	loader->LoadTexture("apple.png", &m_fruit_texture, nullptr);
 	m_spriteBatch->AddTexture(m_fruit_texture.Get());
+	//m_fruit->loadTexture("apple.png", m_spriteBatch, loader);
 
     // Create the Sample Overlay.
 
@@ -250,7 +254,7 @@ void SimpleSprites::Update(float timeTotal, float timeDelta)
 			bool hit = false;
 			for (auto p : m_projectiles)
 			{
-				if (enemy->hasCollided(p->getPos()))
+				if (enemy->hasCollided(p->getPos(), EnemyDetails::EnemyCollisionSize))
 				{
 					// Give more points if player was jumping
 					if (m_runner->isJumping())
@@ -277,7 +281,7 @@ void SimpleSprites::Update(float timeTotal, float timeDelta)
 	// update currently existing enemies
 	for (auto enemy : m_enemies)
 	{
-		if (enemy->hasCollided(m_runner->getPos()))
+		if (enemy->hasCollided(m_runner->getPos(), EnemyDetails::EnemyCollisionSize))
 		{
 			m_runner->decreaseHealth(EnemyDetails::harm);
 			RunnerDetails::wasHit = true;
@@ -312,7 +316,7 @@ void SimpleSprites::Update(float timeTotal, float timeDelta)
 	// check if player got fruit
 	if (m_fruit)
 	{
-		if (m_fruit->hasCollided(m_runner->getPos()))
+		if (m_fruit->hasCollided(m_runner->getPos(), FruitDetails::FruitCollisionSize))
 		{
 			m_runner->decreaseHealth(FruitDetails::healthPoints);
 			delete m_fruit;
@@ -474,7 +478,7 @@ void SimpleSprites::Render()
 	}
 
 	// Draw the reset button
-	m_spriteBatch->Draw(m_resetButton_texture.Get(), m_resetButton->getPos(),
+	m_spriteBatch->Draw(m_resetButton->getTexturePtr(), m_resetButton->getPos(),
 						PositionUnits::DIPs, float2(100.0, 100.0), SizeUnits::DIPs, 
 						float4(1.0f, 1.0f, 1.0f, 0.7f), 0.0f);
 
@@ -517,7 +521,7 @@ void SimpleSprites::getKeyresults(Windows::System::VirtualKey key, float timeDel
 	{
 		// change direction of ship (up, down, left, right)
 	case Windows::System::VirtualKey::Up:
-		m_runner->move(RUN_UP);
+		m_runner->changedir(SPRITE_DIR_UP);
 		return;
 	/*case Windows::System::VirtualKey::Down:
 		m_spaceship->moveShip(SHIP_DOWN);
@@ -562,7 +566,7 @@ void SimpleSprites::getKeyresults(Windows::System::VirtualKey key, float timeDel
 
 void SimpleSprites::RestartIfNeeded(float2 mousePos)
 {
-	if (m_resetButton->hasCollided(mousePos))
+	if (m_resetButton->hasCollided(mousePos, FruitDetails::FruitCollisionSize))
 	{
 		m_runner->resetHealthScorePos();
 		return;

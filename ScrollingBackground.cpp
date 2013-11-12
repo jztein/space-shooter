@@ -11,7 +11,7 @@ using namespace BasicSprites;
 
 ScrollingBackground::ScrollingBackground()
 {
-	m_updateStep = 5.0f;
+	m_updateStep = 150.0f;
 
 	m_pos1.x = 0.0f; m_pos1.y = 0.0f;
 	m_pos2.x = 0.0f; m_pos2.y = 0.0f;
@@ -19,15 +19,16 @@ ScrollingBackground::ScrollingBackground()
 	m_texturePtr = NULL;
 }
 
-void ScrollingBackground::update()
+void ScrollingBackground::update(float timeDelta)
 {
 	if (m_pos1.x < -m_windowRect.Width / 2)
 		m_pos1.x = m_pos2.x + m_windowRect.Width;
 	if (m_pos2.x < -m_windowRect.Width / 2)
 		m_pos2.x = m_pos1.x + m_windowRect.Width;
 
-	m_pos1.x -= m_updateStep;
-	m_pos2.x -= m_updateStep;
+	float change = m_updateStep * timeDelta;
+	m_pos1.x -= change;
+	m_pos2.x -= change;
 }
 
 void ScrollingBackground::initSliding()
@@ -58,9 +59,9 @@ void ScrollingBackground::draw(BasicSprites::SpriteBatch^ spriteBatch, float4 co
 		);
 }
 
-ID3D11Texture2D* ScrollingBackground::loadTexture(BasicLoader^ loader)
+void ScrollingBackground::loadTexture(Platform::String^ filename, BasicSprites::SpriteBatch^ spriteBatch, BasicLoader^ loader)
 {
-	loader->LoadTexture("3d-underwater_bg.png", &m_texture, nullptr);
+	loader->LoadTexture(filename, &m_texture, nullptr);
 	
 	// Get texture size
 	D3D11_TEXTURE2D_DESC* descriptor = new D3D11_TEXTURE2D_DESC;
@@ -69,5 +70,5 @@ ID3D11Texture2D* ScrollingBackground::loadTexture(BasicLoader^ loader)
 	m_textureSize.Height = descriptor->Height;
 	
 	m_texturePtr = m_texture.Get();
-	return m_texturePtr;
+	spriteBatch->AddTexture(m_texturePtr);
 }

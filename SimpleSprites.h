@@ -19,6 +19,8 @@ class ScrollingBackground;
 class Fruit;
 class Reset;
 
+class Player;
+
 namespace GameSettings
 {
 	namespace EnemyDetails
@@ -130,7 +132,8 @@ private:
 
 	Reset* m_resetButton;
 
-	Runner* m_runner;
+	//Runner* m_runner;
+	Player* m_runner;
 	ScrollingBackground* m_scroll_background;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_enemy_texture;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_fruit_texture;
