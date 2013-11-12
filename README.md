@@ -1,4 +1,4 @@
-#Simple shooter
+#SHMUP Platformer - Ninja shooting crabs
 
 ##System Requirements
 - DirectX, C++
@@ -9,7 +9,7 @@
 - Scrolling background
 - Flashing player when attacked
 - Shoots bullets at waves of enemies
-- Pause/ GameOver implemented
+- Pause/ GameOver/ Reset implemented
 - Supports keyboard, mouse and touch
 - // Player can control speed of self
 - Limited bullets (3/ screen) to be more challenging
